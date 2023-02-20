@@ -27,9 +27,16 @@
 4. Het spel eindigt met een winnaar bij drie op een rij, kolom of diagonaal.
 5. Het spel eindigt onbeslist als alle velden gvuld zijn zonder 3 op een rij, kolom of diagonaal. 
 
+# Analyse
+1. Er zijn minimaal 5 zetten nodig om een mogelijke winnaar te bepalen
+2. Na 9 zetten is het spel altijd geeindigd.
+3. Of eerst een 0 of een X  wordt gezet is niet relevant voor het spel. 
+
 # Ontwerpkeuzes
 1. het speelveld is een 2D array van int
 2. geldige invoer is 0 (ZERO) of 1 (CROSS)
 3. Het maakt niet uit wie begint.
 4. Bij het niet volgen van een regel stopt spel met exceptie. 
 5. Na .Trueelke zet wordt bepaald of er een winnaar is. 
+6. Om een winnaa te bepalen kijkenwe alleen naar kolom, rij of diagonaal bij laatst gespeelde zet
+7. Winnende rij heeft altijd waarde `0` of `3` 

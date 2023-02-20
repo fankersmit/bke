@@ -54,45 +54,73 @@ public class Game
 
 	// determine if  the field can be played
 	//
-	private bool FieldIsEmpty(int col, int row)
+	private bool FieldIsEmpty(int row, int col)
 	{
-		return _board[col, row] == -3;
+		return _board[row, col] == -3;
 	}
 
 	// play the next move
 	// if it is illegal exception is thrown.
-	public void PlayMove(int move, int col, int row)
+	public void PlayMove(int move, int row, int col)
 	{
 		if (_lastMove == move)
 		{
-			var msg = "Same payer cannot  play twice.";
+			var msg = "Same player cannot  play twice.";
 			throw new InvalidOperationException(msg);
-		}
-		else
-		{
-			_lastMove = move;
 		}
 
-		if (!FieldIsEmpty(col, row))
+		if (!FieldIsEmpty(row, col))
 		{
-			var msg = $"Field[{col}, {row}] is already filled.";
+			var msg = $"Field[{row}, {col}] is already filled.";
 			throw new InvalidOperationException(msg);
 		}
-		Board[col, row] = move;
+		Board[row, col] = move;
+		_lastMove = move;
 	}
 
-	public bool DoWeHave_a_Winner()
+	public bool DoWeHave_a_Winner(int move, int row, int col)
 	{
-		bool result = false;
-		var total = 0; 
-		// sum rows
-		for (var i = 0; i < 3; ++i)
+		if (IsWinningRow(ro))
 		{
-			total += _board[i, 0];
+			return true;
 		}
-		result = (total == 0 || total == 3) ? true : false;
-		// sum cols
+
+		if (IsWinningColumn(col))
+		{
+			return true;
+		}
+
 		// sum diagonals
-		return result;
+		return false;
+	}
+
+	private bool IsWinningRow( int row)
+	{
+		var total = 0;
+		for ( var i = 0; i < 3; ++i )
+		{
+			total += _board[row, i];
+		}
+		return (total == 0 || total == 3);
+	}
+
+	private bool IsWinningColumn( int col)
+	{
+		var total = 0;
+		for ( var i = 0; i < 3; ++i )
+		{
+			total += _board[i, col];
+		}
+		return (total == 0 || total == 3);
+	}
+
+	private bool IsWinningLeftDiagonal( int row, int col)
+	{
+		return true;
+	}
+
+	private bool IsWinningRightDiagonal( int row, int col)
+	{
+		return true;
 	}
 }
