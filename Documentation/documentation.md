@@ -1,4 +1,4 @@
-# H1 Boter, Kaas en eieren
+# Boter, Kaas en eieren
 
 1. Twee spelers.
 2. Bord van 3 X 3 velden.
