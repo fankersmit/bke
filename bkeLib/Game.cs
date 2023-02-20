@@ -2,7 +2,7 @@
 
 public class Game
 {
-	private int[,] _board = new int[3,3];
+	private readonly int[,] _board = new int[3,3];
 	private int _lastMove = -1; // init to non used value
 
 	// Constructors
@@ -27,12 +27,12 @@ public class Game
 	//
 	public void ClearBoard()
 	{
-		var initialValue = -3;
-		for (int i = 0; i < _board.GetLength(0); i++)
+		const int _initialValue = -3;
+		for (var i = 0; i < _board.GetLength(0); i++)
 		{
-			for (int x = 0; x < _board.GetLength(1); x++)
+			for (var x = 0; x < _board.GetLength(1); x++)
 			{
-				_board[i,x] = initialValue;
+				_board[i,x] = _initialValue;
 			}
 		}
 	}
@@ -61,6 +61,7 @@ public class Game
 
 	// play the next move
 	// if it is illegal exception is thrown.
+	//
 	public void PlayMove(int move, int row, int col)
 	{
 		if (_lastMove == move)
@@ -78,20 +79,14 @@ public class Game
 		_lastMove = move;
 	}
 
-	public bool DoWeHave_a_Winner(int move, int row, int col)
+	// determine if last move was a winning move by checking if there
+	// is a row , column or diagonal on the board
+	public bool IsWinningMove(int row, int col)
 	{
-		if (IsWinningRow(ro))
-		{
-			return true;
-		}
-
-		if (IsWinningColumn(col))
-		{
-			return true;
-		}
-
-		// sum diagonals
-		return false;
+		return IsWinningRow(row) |
+		       IsWinningColumn(col) |
+		       IsWinningLeftDiagonal() |
+		       IsWinningRightDiagonal();
 	}
 
 	private bool IsWinningRow( int row)
@@ -101,7 +96,7 @@ public class Game
 		{
 			total += _board[row, i];
 		}
-		return (total == 0 || total == 3);
+		return total == 0 | total == 3;
 	}
 
 	private bool IsWinningColumn( int col)
@@ -111,16 +106,30 @@ public class Game
 		{
 			total += _board[i, col];
 		}
-		return (total == 0 || total == 3);
+		return total == 0 | total == 3;
 	}
 
-	private bool IsWinningLeftDiagonal( int row, int col)
+	private bool IsWinningLeftDiagonal()
 	{
-		return true;
+		var total = 0;
+		var col = 0;
+		for ( var row = 0; row < 3; ++row  )
+		{
+			total += _board[row, col];
+			++col;
+		}
+		return total == 0 | total == 3;
 	}
 
-	private bool IsWinningRightDiagonal( int row, int col)
+	private bool IsWinningRightDiagonal()
 	{
-		return true;
+		var total = 0;
+		var col = 2;
+		for ( var row = 0; row < 3; ++row  )
+		{
+			total += _board[row, col];
+			--col;
+		}
+		return total == 0 | total == 3;
 	}
 }
