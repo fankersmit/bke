@@ -4,6 +4,7 @@ public class Game
 {
 	private readonly int[,] _board = new int[3,3];
 	private int _lastMove = -1; // init to non used value
+	private int _movesCount = 0;
 
 	// Constructors
 	//
@@ -35,6 +36,8 @@ public class Game
 				_board[i,x] = _initialValue;
 			}
 		}
+
+		_movesCount = 0;
 	}
 
 	// determine Board sum
@@ -77,6 +80,7 @@ public class Game
 		}
 		Board[row, col] = move;
 		_lastMove = move;
+		++_movesCount;
 	}
 
 	// determine if last move was a winning move by checking if there
@@ -131,5 +135,10 @@ public class Game
 			--col;
 		}
 		return total == 0 | total == 3;
+	}
+
+	public bool IsGameCompleted()
+	{
+		return _movesCount == 9;
 	}
 }

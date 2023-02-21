@@ -8,6 +8,28 @@ public class UnitTest1
 	private const int Cross = 1;
 
 	[Fact]
+	public void Game_Completed_When_All_Fields_Are_Taken()
+	{
+		// arrange
+		var game = new Game();
+		int move1 = 0;
+		int move2 = 1;
+
+		// act, play 
+		game.PlayMove(move1, 0, 0);
+		game.PlayMove(move2, 0, 1);
+		game.PlayMove(move1, 0, 2);
+		game.PlayMove(move2, 1, 0);
+		game.PlayMove(move1, 1, 1);
+		game.PlayMove(move2, 1, 2);
+		game.PlayMove(move1, 2, 0);
+		game.PlayMove(move2, 2, 2);
+		game.PlayMove(move1, 2, 1);
+		// assert
+		Assert.True(game.IsGameCompleted());
+	}
+
+	[Fact]
 	public void Can_We_Start_New_Game()
 	{
 		// arrange
