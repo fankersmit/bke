@@ -79,33 +79,7 @@ internal class Program
 
 		var col = int.Parse( nextMove.Substring(1,1)) - 1;
 		var row = (int)nextMove.ToUpper()[0] - 65;
-		//var row = GetRow();
-		//var col = GetColumn();
-
 		return (row, col);
-	}
-
-	private static int GetColumn()
-	{
-		// notice: numpad is not supported
-		var validCols = new[] { ConsoleKey.D1, ConsoleKey.D2, ConsoleKey.D3 };
-		var keyInfo = new ConsoleKeyInfo();
-		do
-		{
-			keyInfo = Console.ReadKey();
-		} while (!validCols.AsEnumerable().Contains(keyInfo.Key));
-		return int.Parse(keyInfo.KeyChar.ToString()) - 1;
-	}
-
-	private static int GetRow()
-	{
-		var validRows = new[] { ConsoleKey.A, ConsoleKey.B, ConsoleKey.C };
-		var keyInfo = new ConsoleKeyInfo();
-		do
-		{
-			keyInfo = Console.ReadKey();
-		} while (!validRows.AsEnumerable().Contains(keyInfo.Key));
-		return keyInfo.KeyChar.ToString().ToUpper()[0] - 65;
 	}
 
 	private static void DisplayBoard(Game game)
