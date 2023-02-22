@@ -78,9 +78,12 @@ public class Game
 			var msg = $"Field[{row}, {col}] is already filled.";
 			throw new InvalidOperationException(msg);
 		}
-		Board[row, col] = move;
-		_lastMove = move;
-		++_movesCount;
+		else
+		{
+			Board[row, col] = move;
+			_lastMove = move;
+			++_movesCount;
+		}
 	}
 
 	// determine if last move was a winning move by checking if there

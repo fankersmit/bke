@@ -11,6 +11,8 @@ internal class Program
 	private const int Cross = 1;
 	private const int Zero = 0;
 
+	// Main is where game playing happens
+	//
 	private static void Main(string[] args)
 	{
 		// end the program with control+C, allowing running loop to finish
@@ -33,13 +35,30 @@ internal class Program
 
 			DisplayBoard( game );
 			var move = GetNextMove();
-			game.PlayMove( currentPlayer ,move.row, move.col);
+
+			try
+			{
+				game.PlayMove( currentPlayer ,move.row, move.col);
+			}
+			catch (InvalidOperationException e)
+			{
+				Console.WriteLine(e.Message);
+				continue;
+			}
+
 			if (game.IsWinningMove(move.row, move.col))
 			{
+				DisplayBoard( game );
 				Console. WriteLine($"We have a winner: {currentPlayer}");
 				_gameCompleted = true;
 			}
+			else
+			{
+				_gameCompleted = game.IsGameCompleted();
+			}
 
+			// change current player
+			// each  game starts with another player 
 			currentPlayer = currentPlayer == Cross ? Zero : Cross;
 		}
 

@@ -2,20 +2,36 @@ namespace bkeLiTests;
 
 using bkeLib;
 
-public class UnitTest1
+public class bkeLibUnitTests
 {
 	private const int Zero = 0;
 	private const int Cross = 1;
 
 	[Fact]
+	public void Game_Not_Completed_When_Fields_Are_Free()
+	{
+		// arrange
+		var game = new Game();
+		var move1 = Zero;
+		var move2 = Cross;
+
+		// act, play 
+		game.PlayMove(move1, 0, 0);
+		game.PlayMove(move2, 0, 1);
+		game.PlayMove(move1, 0, 2);
+		game.PlayMove(move2, 1, 0);
+		// assert
+		Assert.False(game.IsGameCompleted());
+	}
+	[Fact]
 	public void Game_Completed_When_All_Fields_Are_Taken()
 	{
 		// arrange
 		var game = new Game();
-		int move1 = 0;
-		int move2 = 1;
+		int move1 = Zero;
+		int move2 = Cross;
 
-		// act, play 
+		// act, play
 		game.PlayMove(move1, 0, 0);
 		game.PlayMove(move2, 0, 1);
 		game.PlayMove(move1, 0, 2);
