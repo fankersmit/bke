@@ -20,7 +20,6 @@ internal class Program
 		Console.OutputEncoding = Encoding.Unicode;
 
 		WelcomeMessage();
-
 		var game = StartNewGame();
 		var currentPlayer = Cross;
 
@@ -32,7 +31,6 @@ internal class Program
 				game = StartNewGame();
 				_gameCompleted = false;
 			}
-
 			DisplayBoard( game );
 			var move = GetNextMove();
 
@@ -55,6 +53,10 @@ internal class Program
 			else
 			{
 				_gameCompleted = game.IsGameCompleted();
+				if (_gameCompleted)
+				{
+					Console. WriteLine("It's a  draw.");
+				}
 			}
 
 			// change current player
@@ -75,7 +77,11 @@ internal class Program
 		do
 		{
 			nextMove = Console.ReadLine();
-		} while ( !validMoves.AsEnumerable().Contains(nextMove.ToUpper()) );
+			if (nextMove is null)
+			{
+				nextMove = string.Empty;
+			}; // resolve CS8602,note null forgiving operator in next line.
+		} while ( !validMoves.AsEnumerable().Contains(nextMove!.ToUpper()) );
 
 		var col = int.Parse( nextMove.Substring(1,1)) - 1;
 		var row = (int)nextMove.ToUpper()[0] - 65;
