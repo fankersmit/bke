@@ -70,8 +70,18 @@ internal class Program
 	// return a tuple
 	private static ( int row, int col) GetNextMove()
 	{
-		var row = GetRow();
-		var col = GetColumn();
+		var validMoves = new string[] { "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3" };
+		var nextMove = string.Empty;
+		do
+		{
+			nextMove = Console.ReadLine();
+		} while ( !validMoves.AsEnumerable().Contains(nextMove.ToUpper()) );
+
+		var col = int.Parse( nextMove.Substring(1,1)) - 1;
+		var row = (int)nextMove.ToUpper()[0] - 65;
+		//var row = GetRow();
+		//var col = GetColumn();
+
 		return (row, col);
 	}
 
