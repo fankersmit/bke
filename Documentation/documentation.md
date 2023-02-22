@@ -43,9 +43,9 @@
 4. Bij het niet volgen van een regel wordt exceptie opgegooid. 
 5. Na elke zet wordt bepaald of er een winnaar is. 
 6. Om een winnaar te bepalen kijken we alleen naar kolom, rij of diagonaal bij laatst gespeelde zet
-7. Winnende rij heeft altijd waarde `0` of `3`
-8. Na elke zet bepalen we of we een winnar kunnen aanwijzen
+7. Keuze 6 wordt niet geoptimaliseerd.
+8. Winnende rij heeft altijd waarde `0` of `3`
+8. Na elke zet bepalen we of we een winnaar kunnen aanwijzen
 9. Een winnaar wordt aangewezen door te valideren of en  een reeks van 3 X of 0 is.
 10. Spel spelen wordt gecodeerd in console app.
-11. Spelregels uitvoeren wordt gedoceerd in library.
-12. 
+11. Spel en spelregels uitvoeren wordt gedoceerd in library. 
