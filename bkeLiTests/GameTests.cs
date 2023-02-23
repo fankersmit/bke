@@ -12,14 +12,12 @@ public class bkeLibUnitTests
 	{
 		// arrange
 		var game = new Game();
-		var move1 = Zero;
-		var move2 = Cross;
 
-		// act, play 
-		game.PlayMove(move1, 0, 0);
-		game.PlayMove(move2, 0, 1);
-		game.PlayMove(move1, 0, 2);
-		game.PlayMove(move2, 1, 0);
+		// act, play
+		game.PlayMove(Zero, 0, 0);
+		game.PlayMove(Cross, 0, 1);
+		game.PlayMove(Zero, 0, 2);
+		game.PlayMove(Cross, 1, 0);
 		// assert
 		Assert.False(game.IsGameCompleted());
 	}
@@ -28,19 +26,17 @@ public class bkeLibUnitTests
 	{
 		// arrange
 		var game = new Game();
-		int move1 = Zero;
-		int move2 = Cross;
 
 		// act, play
-		game.PlayMove(move1, 0, 0);
-		game.PlayMove(move2, 0, 1);
-		game.PlayMove(move1, 0, 2);
-		game.PlayMove(move2, 1, 0);
-		game.PlayMove(move1, 1, 1);
-		game.PlayMove(move2, 1, 2);
-		game.PlayMove(move1, 2, 0);
-		game.PlayMove(move2, 2, 2);
-		game.PlayMove(move1, 2, 1);
+		game.PlayMove(Zero, 0, 0);
+		game.PlayMove(Cross, 0, 1);
+		game.PlayMove(Zero, 0, 2);
+		game.PlayMove(Cross, 1, 0);
+		game.PlayMove(Zero, 1, 1);
+		game.PlayMove(Cross, 1, 2);
+		game.PlayMove(Zero, 2, 0);
+		game.PlayMove(Cross, 2, 2);
+		game.PlayMove(Zero, 2, 1);
 		// assert
 		Assert.True(game.IsGameCompleted());
 	}

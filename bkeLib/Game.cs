@@ -4,7 +4,7 @@ public class Game
 {
 	private readonly int[,] _board = new int[3,3];
 	private int _lastMove = -1; // init to non used value
-	private int _movesCount = 0;
+	private int _movesCount; // initialized to 0 by default
 
 	// Constructors
 	//
@@ -28,12 +28,12 @@ public class Game
 	//
 	public void ClearBoard()
 	{
-		const int _initialValue = -3;
+		const int initialValue = -3;
 		for (var i = 0; i < _board.GetLength(0); i++)
 		{
 			for (var x = 0; x < _board.GetLength(1); x++)
 			{
-				_board[i,x] = _initialValue;
+				_board[i,x] = initialValue;
 			}
 		}
 
@@ -69,7 +69,7 @@ public class Game
 	{
 		if (_lastMove == move)
 		{
-			var msg = "Same player cannot  play twice.";
+			const string msg = "Same player cannot  play twice.";
 			throw new InvalidOperationException(msg);
 		}
 
@@ -78,12 +78,10 @@ public class Game
 			var msg = $"Field[{row}, {col}] is already filled.";
 			throw new InvalidOperationException(msg);
 		}
-		else
-		{
-			Board[row, col] = move;
-			_lastMove = move;
-			++_movesCount;
-		}
+
+		Board[row, col] = move;
+		_lastMove = move;
+		++_movesCount;
 	}
 
 	// determine if last move was a winning move by checking if there

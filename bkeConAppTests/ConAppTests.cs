@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Data;
 using bkeConApp;
 using bkeLib;
 
@@ -55,7 +53,7 @@ public class ConAppTests
 	{
 		// arrange
 		var oldIn = Console.In;
-		var input = "A1";
+		const string input = "A1";
 		var expectedResult = (0, 0);
 		(int, int) result;
 		// act
@@ -79,12 +77,12 @@ public class ConAppTests
 		const int expectedLength = 74;
 
 		// arrange, redirect console to memory
-		StreamWriter currentOut;
 		string board;
 		var oldOut = Console.Out;
 
 		using( var ms = new MemoryStream() )
 		{
+			StreamWriter currentOut;
 			using (currentOut = new StreamWriter(ms))
 			{
 				currentOut.AutoFlush = true;

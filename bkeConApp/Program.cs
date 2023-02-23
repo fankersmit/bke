@@ -88,10 +88,7 @@ namespace bkeConApp
 			do
 			{
 				nextMove = Console.ReadLine();
-				if (nextMove is null)
-				{
-					nextMove = string.Empty;
-				}
+				nextMove  = nextMove ?? string.Empty;
 			} while (!validMoves.AsEnumerable().Contains(nextMove.ToUpper()));
 
 			return ConvertInputToMove(nextMove);
