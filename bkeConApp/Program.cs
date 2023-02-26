@@ -16,10 +16,10 @@ namespace bkeConApp
 {
 	internal class Program
 	{
-		private static bool _keepRunning = true;
-		private static bool _gameCompleted = true;
 		private const int Cross = 1;
 		private const int Zero = 0;
+		private static bool _keepRunning = true;
+		private static bool _gameCompleted = true;
 
 		// Main is where game playing happens
 		//
@@ -27,6 +27,7 @@ namespace bkeConApp
 		{
 			// end the program with control+C, allowing running loop to finish
 			Console.CancelKeyPress += CancelEventHandler;
+			// make sure the board is drawn correct.
 			Console.OutputEncoding = Encoding.Unicode;
 
 			WelcomeMessage();
