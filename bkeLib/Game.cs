@@ -2,6 +2,7 @@
 
 public class Game
 {
+	private const int emptyField = -3;
 	private readonly int[,] _board = new int[3,3];
 	private int _lastMove = -1; // init to non used value
 	private int _movesCount; // initialized to 0 by default
@@ -20,7 +21,7 @@ public class Game
 	// Do we have an empty  playing field?
 	public bool BoardIsEmpty()
 	{
-		return  BoardTotalSum() == -27;
+		return  BoardTotalSum() == emptyField * _board.Length;
 	}
 
 	// initialize board to play a new game
@@ -28,12 +29,11 @@ public class Game
 	//
 	public void ClearBoard()
 	{
-		const int initialValue = -3;
 		for (var i = 0; i < _board.GetLength(0); i++)
 		{
 			for (var x = 0; x < _board.GetLength(1); x++)
 			{
-				_board[i,x] = initialValue;
+				_board[i,x] = emptyField;
 			}
 		}
 
@@ -59,7 +59,7 @@ public class Game
 	//
 	private bool FieldIsEmpty(int row, int col)
 	{
-		return _board[row, col] == -3;
+		return _board[row, col] == emptyField;
 	}
 
 	// play the next move
@@ -97,7 +97,7 @@ public class Game
 	private bool IsWinningRow( int row)
 	{
 		var total = 0;
-		for ( var i = 0; i < 3; ++i )
+		for ( var i = 0; i < _board.GetLength(0); ++i )
 		{
 			total += _board[row, i];
 		}
@@ -107,7 +107,7 @@ public class Game
 	private bool IsWinningColumn( int col)
 	{
 		var total = 0;
-		for ( var i = 0; i < 3; ++i )
+		for ( var i = 0; i < _board.GetLength(1); ++i )
 		{
 			total += _board[i, col];
 		}
@@ -118,7 +118,7 @@ public class Game
 	{
 		var total = 0;
 		var col = 0;
-		for ( var row = 0; row < 3; ++row  )
+		for ( var row = 0; row < _board.GetLength(0); ++row  )
 		{
 			total += _board[row, col];
 			++col;
@@ -130,7 +130,7 @@ public class Game
 	{
 		var total = 0;
 		var col = 2;
-		for ( var row = 0; row < 3; ++row  )
+		for ( var row = 0; row < _board.GetLength(1); ++row  )
 		{
 			total += _board[row, col];
 			--col;
