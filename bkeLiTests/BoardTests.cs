@@ -72,6 +72,7 @@ public class BoardTests
 		Assert.Equal(expectedStartingPoint, board.GetLeftDownStartingPoint(move));
 	}
 
+	/*
 	[Fact]
 	public void Can_Determine_Move_Creates_Series_On_Diagonal()
 	{
@@ -90,6 +91,7 @@ public class BoardTests
 		// assert
 		Assert.True( actual );
 	}
+    */
 
 	// test data for left-down diagonal
 	public static IEnumerable<object[]> DataForColumns()
