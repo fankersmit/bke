@@ -1,4 +1,6 @@
-﻿namespace bkeLib;
+﻿using System.Runtime.InteropServices;
+
+namespace bkeLib;
 
 public class Game
 {
@@ -11,7 +13,7 @@ public class Game
 	//
 	public Game()
 	{
-		ClearBoard();
+		StartNewGame();
 	}
 
 	// properties
@@ -36,7 +38,11 @@ public class Game
 				_board[i,x] = emptyField;
 			}
 		}
+	}
 
+	private void StartNewGame()
+	{
+		ClearBoard();
 		_movesCount = 0;
 	}
 
@@ -45,11 +51,11 @@ public class Game
 	private int BoardTotalSum()
 	{
 		var total = 0;
-		for (var i = 0; i < _board.GetLength(0); i++)
+		for (var row = 0; row < _board.GetLength(0); row++)
 		{
-			for (var x = 0; x < _board.GetLength(1); x++)
+			for (var col = 0; col < _board.GetLength(1); col++)
 			{
-				total +=  _board[i,x] ;
+				total +=  _board[row,col] ;
 			}
 		}
 		return total;
@@ -97,9 +103,9 @@ public class Game
 	private bool IsWinningRow( int row)
 	{
 		var total = 0;
-		for ( var i = 0; i < _board.GetLength(0); ++i )
+		for ( var col = _board.GetLowerBound(1); col < _board.GetLength(0); ++col )
 		{
-			total += _board[row, i];
+			total += _board[row, col];
 		}
 		return total == 0 | total == 3;
 	}
@@ -107,9 +113,9 @@ public class Game
 	private bool IsWinningColumn( int col)
 	{
 		var total = 0;
-		for ( var i = 0; i < _board.GetLength(1); ++i )
+		for ( var row = _board.GetLowerBound(0); row < _board.GetLength(1); ++row )
 		{
-			total += _board[i, col];
+			total += _board[row, col];
 		}
 		return total == 0 | total == 3;
 	}
@@ -117,8 +123,8 @@ public class Game
 	private bool IsWinningLeftDiagonal()
 	{
 		var total = 0;
-		var col = 0;
-		for ( var row = 0; row < _board.GetLength(0); ++row  )
+		var col = _board.GetLowerBound(1);
+		for ( var row =_board.GetLowerBound(0); row < _board.GetLength(0); ++row  )
 		{
 			total += _board[row, col];
 			++col;
@@ -129,8 +135,8 @@ public class Game
 	private bool IsWinningRightDiagonal()
 	{
 		var total = 0;
-		var col = 2;
-		for ( var row = 0; row < _board.GetLength(1); ++row  )
+		var col = _board.GetUpperBound(1);
+		for ( var row = _board.GetLowerBound(0); row < _board.GetLength(1); ++row  )
 		{
 			total += _board[row, col];
 			--col;

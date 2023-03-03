@@ -9,7 +9,7 @@
 5. De eerste speler met 3 X of 3 0, horizontaal, verticaal of diagonaal wint.
 6. ALs geen van de spelers 3 op een rij krijgt, is het gelijk spel.   
 
-# Spelbegrippen
+## Spelbegrippen
  - Speler
  - Zet
  - Kruisje
@@ -21,7 +21,7 @@
  - Winst
  - Gelijk spel of Onbeslist
 
-# Regels
+## Regels
 1. spelers spelen omstebeurt, twee keer zelfde speler mag niet.
 2. een zet is definitief, tweemaal op zelfde veld spelen mag niet.
 3. een zet is definitief, een zet terugnemen mag niet.
@@ -29,19 +29,19 @@
 5. Het spel eindigt onbeslist als alle velden gvuld zijn zonder 3 op een rij, kolom of diagonaal.
 6. Na elk spel wisselt beginnende speler.
 
-# Analyse
+## Analyse
 1. Er zijn minimaal 5 zetten nodig om een mogelijke winnaar te bepalen
 2. Na 9 zetten is het spel altijd geeindigd.
 3. Of eerst een 0 of een X  wordt gezet is niet relevant voor het spel. 
 4. De volgorde waarin rij, kolom of diagonaal gevuld wordt, is niet  relevant voor het bepalen van de winnaar.
 5. het spel kent een winnaar, of eindigt onbeslist
 
-# Ontwerpkeuzes
+## Initiele Ontwerpkeuzes
 1. het speelveld is een 2D array van int
 2. geldige invoer is 0 (ZERO) of 1 (CROSS)
 3. Het maakt niet uit wie begint.
-4. Bij het niet volgen van een regel wordt exceptie opgegooid. 
-5. Na elke zet wordt bepaald of er een winnaar is. 
+4. Bij het niet volgen van een regel wordt exceptie opgegooid.
+5. Eindgebruiker wordt iet lastig gevallen met exceptie.
 6. Om een winnaar te bepalen kijken we alleen naar kolom, rij of diagonaal bij laatst gespeelde zet
 7. Keuze 6 wordt niet geoptimaliseerd.
 8. Winnende rij heeft altijd waarde `0` of `3`
@@ -49,3 +49,32 @@
 9. Een winnaar wordt aangewezen door te valideren of en  een reeks van 3 X of 0 is.
 10. Spel spelen wordt gecodeerd in console app.
 11. Spel en spelregels uitvoeren wordt gedoceerd in library. 
+
+# Nieuwe Wensen na eerste oplevering
+1. Naast standaard bord 3X3 ook andere maten zoals 4X5 of 6X6.
+2. Regels blijven hetzelfde: winst is 3 aansluitende zelfde waarden van ZERO of CROSS 
+2. Minmale maat is 3X3, maximale maat is 8X8
+3. Bij meerdere spelletjes winnaars bijhouden: wie heeft de meeste gewonnen?
+
+## Analyse
+1. Drie aansluitende velden kan nu overal gebeuren, is geen complete rij, kolomn of diagonaal meer.
+2. Zet zelf moet gebruikt worden om de winnaar te bepalen.
+3. Bord krijgt meer eigenschappen en complexiteit.
+4. Weergeven borden zetten wordt complexer, console nog de juiste keuze?. 
+5. Resultaat van  spel en spelers bewaren en opvragen.
+6. Meer logica moet van app naar lib, specifiej, speelrondes. 
+
+## Ontwerpkeuzes
+
+1. Bord word zelfstanding en in spel opgevoerd (DI)
+2. Zet wordt zelfstandige struct.  
+2. Spelers kunnen voor een spel begint bord grootte opgeven.
+2. Spelers worden toegeveogd.
+3. Spellen en Spelers worden opgeslagen en kunnen wordenop gevraagd.
+4. Voor nu blijven we bij console.
+5. Voor het bepalen van de winnende zet kunnen we hetzelfde algoritme gebruiken, met de volgende aanpassing: 
+   - tel tot 3 opeenvolgende zelfde zetten.
+   -  stop niet als binnen 3 een andere zet gevonden wordt maar begin opnieuw.
+   -  stop als einde van rij of kolom bereikt wordt
+   -  het is nog steeds niet interessant om te optimaliseren, maar we gaan wel meten!
+   - voor een diagonaal bepalen we eerst startrij en sartkolom
