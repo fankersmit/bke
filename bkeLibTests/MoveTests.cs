@@ -1,7 +1,6 @@
-using System.Diagnostics;
 using bkeLib;
 
-namespace bkeLiTests;
+namespace GameTests;
 
 public class MoveTests
 {

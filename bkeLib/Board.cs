@@ -1,5 +1,3 @@
-using System.Buffers;
-
 namespace bkeLib;
 
 // this is BKE playing field class
@@ -113,7 +111,29 @@ public class Board
 
 	}
 
-	private bool CreatesLeftDownDiagonalSeries( Move move )
+	public bool CreatesLeftDownDiagonalSeries( Move move )
+	{
+		var seriesLength = 0;
+		var mv  = GetLeftDownStartingPoint(move);
+		for (var cnt = 0; cnt < Columns & seriesLength != _seriesCount; ++cnt)
+		{
+			if (_board[mv.Row, mv.Col ] != move.Value)
+			{
+				// start over
+				seriesLength = 0;
+			}
+			else
+			{
+				// add to series length
+				seriesLength += 1;
+			}
+			mv.Row += 1;
+			mv.Col += 1;
+		}
+		return seriesLength == _seriesCount;
+	}
+
+	public bool CreatesRightDownDiagonalSeries( Move move )
 	{
 		var seriesLength = 0;
 		var r = move.Row;
@@ -136,37 +156,14 @@ public class Board
 		return seriesLength == _seriesCount;
 	}
 
-	private bool CreatesRightDownDiagonalSeries( Move move )
-	{
-		var seriesLength = 0;
-		var r = move.Row;
-		var c = move.Col;
-		for (var cnt = 0; cnt < Columns & seriesLength != _seriesCount; ++cnt)
-		{
-			if (_board[r, c] != move.Value)
-			{
-				// start over
-				seriesLength = 0;
-			}
-			else
-			{
-				// add to series length
-				seriesLength += 1;
-			}
-			r += 1;
-			c -= 1;
-		}
-		return seriesLength == _seriesCount;
-	}
-
-	public (int, int) GetLeftDownStartingPoint( Move mv )
+	public (int Row, int Col)  GetLeftDownStartingPoint( Move mv )
 	{
 		var spCol =  mv.Col - mv.Row < _board.GetLowerBound(0) ? _board.GetLowerBound(0) : mv.Col - mv.Row;
 		var spRow  =  mv.Row + (spCol-mv.Col) < 0 ? 0  : mv.Row + (spCol- mv.Col) ;
 		return (spRow, spCol);
 	}
 
-	public  (int, int) GetRightDownStartingPoint(Move mv)
+	public  (int Row, int Col) GetRightDownStartingPoint(Move mv)
 	{
 		var spCol = mv.Col + mv.Row < Columns ? mv.Col + mv.Row : _board.GetUpperBound(1);
 		var spRow = mv.Row - (spCol-mv.Col) < 0 ? 0  : mv.Row - (spCol-mv.Col) ;

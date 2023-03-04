@@ -1,8 +1,8 @@
-namespace bkeLiTests;
+namespace GameTests;
 
 using bkeLib;
 
-public class bkeLibUnitTests
+public class GameTests
 {
 	private const int Zero = 0;
 	private const int Cross = 1;
@@ -21,6 +21,7 @@ public class bkeLibUnitTests
 		// assert
 		Assert.False(game.IsGameCompleted());
 	}
+
 	[Fact]
 	public void Game_Completed_When_All_Fields_Are_Taken()
 	{

@@ -1,4 +1,4 @@
-namespace bkeLiTests;
+namespace GameTests;
 
 using bkeLib;
 
@@ -72,28 +72,35 @@ public class BoardTests
 		Assert.Equal(expectedStartingPoint, board.GetLeftDownStartingPoint(move));
 	}
 
-	/*
-	[Fact]
-	public void Can_Determine_Move_Creates_Series_On_Diagonal()
+	// test data for columns
+	public static IEnumerable<object[]> DataForLetDownDiagonals()
+	{
+		// rows, initial row, expected
+		yield return new object[] { 3, 0, 0, true };
+	}
+
+	[Theory]
+	[MemberData(nameof(DataForLetDownDiagonals))]
+	public void Can_Determine_Move_Creates_Series_On_LeftDown_Diagonal(int bs, int r, int c, bool expected)
 	{
 		// arrange
-		(int row, int col) lastMove = (-1,-1);
-		(int row, int col) move = (0,2);
-		var board = new Board();
-		// act, create  diagonal series
+		var  lastMove = new Move(-1,-1, -1);
+		var board = new Board(bs);
+		var row =  r;
+		var col = c;
+		// act, create diagonal series
 		for( var cnt = 0; cnt < 3; ++cnt )
 		{
-			board.PutMove(move.row + cnt, move.col - cnt, 1);
-			lastMove = (move.row + cnt, move.col - cnt);
+			lastMove = new Move (row + cnt, col + cnt, 1);
+			board.PutMove( lastMove);
 		}
 		// act
-		var actual = board.MoveCreatesSeries( lastMove.row, lastMove.col, 1);
+		var actual = board.CreatesLeftDownDiagonalSeries( lastMove);
 		// assert
-		Assert.True( actual );
+		Assert.Equal( expected, actual );
 	}
-    */
 
-	// test data for left-down diagonal
+	// test data for columns
 	public static IEnumerable<object[]> DataForColumns()
 	{
 		// rows, initial row, expected

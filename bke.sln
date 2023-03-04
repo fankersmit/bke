@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bkeLib", "bkeLib\bkeLib.csproj", "{922EC598-93F0-44CA-8FD4-7A0B9F5517E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bkeLiTests", "bkeLiTests\bkeLiTests.csproj", "{E72162F5-BA3A-4356-B812-57EF22D3E2E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bkeLibTests", "bkeLibTests\bkeLibTests.csproj", "{E72162F5-BA3A-4356-B812-57EF22D3E2E5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bkeConApp", "bkeConApp\bkeConApp.csproj", "{13B477E4-535A-485D-AE6B-13C0E0F55928}"
 EndProject

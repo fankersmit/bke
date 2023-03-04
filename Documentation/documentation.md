@@ -67,7 +67,7 @@
 ## Ontwerpkeuzes
 
 1. Bord word zelfstanding en in spel opgevoerd (DI)
-2. Zet wordt zelfstandige struct.  
+2. Zet wordt zelfstandige readonly struct (Immutable).  
 2. Spelers kunnen voor een spel begint bord grootte opgeven.
 2. Spelers worden toegeveogd.
 3. Spellen en Spelers worden opgeslagen en kunnen wordenop gevraagd.
