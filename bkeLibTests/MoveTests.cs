@@ -1,6 +1,6 @@
 using bkeLib;
 
-namespace GameTests;
+namespace bkeLibTests;
 
 public class MoveTests
 {
@@ -8,9 +8,9 @@ public class MoveTests
 	public void Move_Is_Initialized()
 	{
 		// arrange
-		var row = 2;
-		var col = 3;
-		var val = 1;
+		const int row = 2;
+		const int col = 3;
+		const int val = 1;
 		// act
 		var move = new Move(row, col, val);
 		// assert

@@ -1,10 +1,33 @@
-namespace GameTests;
+using System.Runtime.Intrinsics.X86;
+
+namespace bkeLibTests;
 
 using bkeLib;
 
 public class BoardTests
 {
-	const int SeriesCount = 3;
+	private const int SeriesCount = 3;
+
+	public static IEnumerable<object[]> DataForNotOverTheEdge()
+	{
+		// row, col, expected result
+		yield return new object[] { 1, 2, true };
+		yield return new object[] { 2, 0, true };
+		yield return new object[] { 0, 2, true };
+		yield return new object[] { 0, 4, false };
+		yield return new object[] { 4, 0, false };
+		yield return new object[] { -1, -1, false };
+	}
+
+	[Theory]
+	[MemberData(nameof(DataForNotOverTheEdge))]
+	public void Can_Determine_Move_Is_On_Board( int row, int col, bool expected)
+	{
+		// arrange
+		var board = new Board();
+		// act, assert
+		Assert.Equal(expected,board.NotOverTheEdge(row, col) );
+	}
 
 	// test data for right-down diagonal
 	public static IEnumerable<object[]> DataForRightDownDiagonals()
@@ -37,6 +60,23 @@ public class BoardTests
 		board.PutMove(move);
 		// assert
 		Assert.Equal(expectedStartingPoint, board.GetRightDownStartingPoint(move));
+	}
+
+	[Fact]
+	public void Can_Find_Diagonal_Series_With_Hole()
+	{
+		// arrange
+		var board = new Board(8, 8);
+		var lastMove = new Move();
+		// act
+		for( var cnt = 0; cnt < 6; ++cnt )
+		{
+			var val = cnt == 2 ? 0 : 1; // create a hole on the diagonal;
+			lastMove = new Move(cnt, cnt, val);
+			board.PutMove(lastMove);
+		}
+		// assert
+		Assert.True( board.CreatesLeftDownDiagonalSeries(lastMove ));
 	}
 
 	// test data for left-down diagonal
@@ -75,24 +115,35 @@ public class BoardTests
 	// test data for columns
 	public static IEnumerable<object[]> DataForLetDownDiagonals()
 	{
-		// rows, initial row, expected
-		yield return new object[] { 3, 0, 0, true };
+		// rows, cols, initial row and col, expected result
+		yield return new object[] { 3, 3, 0, 0, true };
+		yield return new object[] { 4, 4, 1, 1, true };
+		yield return new object[] { 5, 5, 2, 2, true };
+		yield return new object[] { 3, 3, 1, 1, false };
+		yield return new object[] { 3, 5, 0, 2, true };
+		yield return new object[] { 3, 5, 0, 3, false };
+		yield return new object[] { 5, 3, 3, 0, false };
+		yield return new object[] { 5, 3, 2, 0, true };
 	}
 
 	[Theory]
 	[MemberData(nameof(DataForLetDownDiagonals))]
-	public void Can_Determine_Move_Creates_Series_On_LeftDown_Diagonal(int bs, int r, int c, bool expected)
+	public void Can_Determine_Move_Creates_Series_On_LeftDown_Diagonal(int bsr, int bsc,int r, int c, bool expected)
 	{
 		// arrange
 		var  lastMove = new Move(-1,-1, -1);
-		var board = new Board(bs);
+		var board = new Board(bsr,bsc);
 		var row =  r;
 		var col = c;
 		// act, create diagonal series
-		for( var cnt = 0; cnt < 3; ++cnt )
+		for( var cnt = 0; cnt < SeriesCount; ++cnt )
 		{
-			lastMove = new Move (row + cnt, col + cnt, 1);
-			board.PutMove( lastMove);
+			//  break on board  border
+			if ((row + cnt) < board.Rows && (col + cnt) < board.Columns)
+			{
+				lastMove = new Move(row + cnt, col + cnt, 1);
+				board.PutMove(lastMove);
+			}
 		}
 		// act
 		var actual = board.CreatesLeftDownDiagonalSeries( lastMove);
@@ -158,6 +209,17 @@ public class BoardTests
 		var actual = board.CreatesRowSeries(lastMove);
 		// assert
 		Assert.Equal(expected, actual );
+	}
+
+	[Fact]
+	public void Cannot_Put_Move_Outside_TheBoard()
+	{
+		// arrange
+		var board = new Board(); // default size is 3 rows and columns
+		// act
+		var move = new Move(3, 3, 1);
+		// assert
+		Assert.Throws<ArgumentOutOfRangeException>( ()=> board.PutMove(move));
 	}
 
 	[Fact]

@@ -86,16 +86,19 @@ public class Board
 
 	public void PutMove(int row, int col, int move)
 	{
-		if (IsFieldEmpty(row, col))
+		if ( !NotOverTheEdge(row, col) ) // note negation
 		{
-			_board[row, col] = move;
+			var msg = $"Field [{row},{col}] is outside the board!";
+			throw new ArgumentOutOfRangeException(msg);
 		}
-		else
+
+		if ( !IsFieldEmpty(row, col) )
 		{
 			var current= _board[row, col];
 			var msg = $"Field [{row},{col}] is already taken: {current}";
 			throw new ArgumentException(msg);
 		}
+		_board[row, col] = move;
 	}
 
 	//  After every move we check if a series of length _seriesCount is
@@ -115,7 +118,7 @@ public class Board
 	{
 		var seriesLength = 0;
 		var mv  = GetLeftDownStartingPoint(move);
-		for (var cnt = 0; cnt < Columns & seriesLength != _seriesCount; ++cnt)
+		while( NotOverTheEdge(mv.Row, mv.Col)  & seriesLength != _seriesCount )
 		{
 			if (_board[mv.Row, mv.Col ] != move.Value)
 			{
@@ -131,6 +134,14 @@ public class Board
 			mv.Col += 1;
 		}
 		return seriesLength == _seriesCount;
+	}
+
+	public bool NotOverTheEdge( int row, int column )
+	{
+		return (row < Rows)
+		       & (column < Columns)
+		       & row >= _board.GetLowerBound(0)
+		       & column >= _board.GetLowerBound(1);
 	}
 
 	public bool CreatesRightDownDiagonalSeries( Move move )

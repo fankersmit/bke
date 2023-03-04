@@ -1,10 +1,8 @@
-﻿using System.Runtime.InteropServices;
-
-namespace bkeLib;
+﻿namespace bkeLib;
 
 public class Game
 {
-	private const int emptyField = -3;
+	private const int EmptyField = -3;
 	private readonly int[,] _board = new int[3,3];
 	private int _lastMove = -1; // init to non used value
 	private int _movesCount; // initialized to 0 by default
@@ -21,10 +19,7 @@ public class Game
 	public int[,] Board => _board;
 
 	// Do we have an empty  playing field?
-	public bool BoardIsEmpty()
-	{
-		return  BoardTotalSum() == emptyField * _board.Length;
-	}
+	public bool BoardIsEmpty() => BoardTotalSum() == EmptyField * _board.Length;
 
 	// initialize board to play a new game
 	// playing fields are  -3, totals are -9
@@ -35,7 +30,7 @@ public class Game
 		{
 			for (var x = 0; x < _board.GetLength(1); x++)
 			{
-				_board[i,x] = emptyField;
+				_board[i,x] = EmptyField;
 			}
 		}
 	}
@@ -65,7 +60,7 @@ public class Game
 	//
 	private bool FieldIsEmpty(int row, int col)
 	{
-		return _board[row, col] == emptyField;
+		return _board[row, col] == EmptyField;
 	}
 
 	// play the next move

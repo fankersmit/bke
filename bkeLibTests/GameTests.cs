@@ -1,4 +1,4 @@
-namespace GameTests;
+namespace bkeLibTests;
 
 using bkeLib;
 
