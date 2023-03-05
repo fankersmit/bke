@@ -1,5 +1,3 @@
-using System.Runtime.Intrinsics.X86;
-
 namespace bkeLibTests;
 
 using bkeLib;

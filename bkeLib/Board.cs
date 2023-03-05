@@ -38,6 +38,13 @@ public class Board
 	public int Rows => _board.GetUpperBound(0) + 1;
 	public int Columns => _board.GetUpperBound(1) + 1;
 
+	// properties, indexers
+	// Define the get indexer to allow client code to use [] notation.
+	public int this[int row, int col]
+	{
+		get => _board [row, col];
+	}
+
 	// fill all fields with _emptyField Value
 	// value is determined at board creation
 	public void Clear()

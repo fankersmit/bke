@@ -8,6 +8,29 @@ public class GameTests
 	private const int Cross = 1;
 
 	[Fact]
+	public void Can_Play_Game_With_Non_Default_Board()
+	{
+		// arrange
+		var board = new Board(8, 8);
+		const int size = 64;  // 8 * 8
+		// act
+		var game = new Game(board);
+		// assert
+		Assert.Equal<int>(size, game.Board.Size);
+	}
+
+	[Fact]
+	public void Can_We_Start_A_Game()
+	{
+		// arrange
+		var board = new Board(8, 8);
+		var game = new Game(board);
+		// act, assert
+		Assert.True(game.Board.IsEmpty());
+		Assert.True(game.BoardIsEmpty());
+	}
+
+	[Fact]
 	public void Game_Not_Completed_When_Fields_Are_Free()
 	{
 		// arrange
