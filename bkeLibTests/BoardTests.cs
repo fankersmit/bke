@@ -8,6 +8,36 @@ public class BoardTests
 {
 	private const int SeriesCount = 3;
 
+	//
+	public static IEnumerable<object[]> DataCreatesSeries()
+	{
+		// row, col, expected result
+		yield return new object[] { 2, 0, 0, 2, true };
+		yield return new object[] { 1, 0, 1, 2, true };
+		yield return new object[] { 0, 2, 2, 0, true };
+		yield return new object[] { 0, 1, 2, 1, true };
+		yield return new object[] { 2, 0, 2, 2, false };
+		yield return new object[] { 1, 0, 2, 2, false };
+		yield return new object[] { 0, 2, 2, 2, false };
+		yield return new object[] { 0, 1, 2, 2, false };
+	}
+
+	[Theory]
+	[MemberData( nameof(DataCreatesSeries))]
+	public void Determine_If_Move_Creates_Series(int r1, int c1, int  r2, int c2, bool expected)
+	{
+		// arrange, test for row, col sBand both diagonals
+		var board = new Board();
+		var secondMove = new Move(r1, c1, 0);
+		var thirdMove = new Move( r2, c2, 0);
+		// act
+		board.PutMove( new Move(1,1, 0)); // play in the centre
+		board.PutMove( secondMove);
+		board.PutMove( thirdMove);
+		// assert
+		Assert.Equal( expected,  board.MoveCreatesSeries(thirdMove) );
+	}
+
 	public static IEnumerable<object[]> DataForNotOverTheEdge()
 	{
 		// row, col, expected result
@@ -62,6 +92,46 @@ public class BoardTests
 		Assert.Equal(expectedStartingPoint, board.GetRightDownStartingPoint(move));
 	}
 
+	// test data for columns
+	public static IEnumerable<object[]> DataForRightDownDiagonalsSeries()
+	{
+		// rows, cols, initial row and col, expected result
+		yield return new object[] { 3, 3, 0, 2, true };
+		yield return new object[] { 4, 4, 1, 3, true };
+		yield return new object[] { 5, 5, 2, 2, true };
+		yield return new object[] { 3, 3, 1, 1, false };
+		yield return new object[] { 3, 5, 0, 2, true };
+		yield return new object[] { 3, 5, 0, 1, false };
+		yield return new object[] { 5, 3, 3, 0, false };
+		yield return new object[] { 5, 3, 2, 0, false };
+		yield return new object[] { 5, 4, 2, 3, true };
+	}
+
+	[Theory]
+	[MemberData(nameof(DataForRightDownDiagonalsSeries))]
+	public void Can_Determine_Move_Creates_Series_On_RightDown_Diagonal(int bsr, int bsc,int r, int c, bool expected)
+	{
+		// arrange
+		var  lastMove = new Move(-1,-1, -1);
+		var board = new Board(bsr,bsc);
+		var row =  r;
+		var col = c;
+		// act, create diagonal series
+		for( var cnt = 0; cnt < SeriesCount; ++cnt )
+		{
+			//  break on board  border
+			lastMove = new Move(row + cnt, col - cnt, 1);
+			if ( board.NotOverTheEdge(lastMove.Row, lastMove.Col))
+			{
+				board.PutMove(lastMove);
+			}
+		}
+		// act
+		var actual = board.CreatesRightDownDiagonalSeries( lastMove);
+		// assert
+		Assert.Equal( expected, actual );
+	}
+
 	[Fact]
 	public void Can_Find_Diagonal_Series_With_Hole()
 	{
@@ -80,7 +150,7 @@ public class BoardTests
 	}
 
 	// test data for left-down diagonal
-	public static IEnumerable<object[]> DataForLeftDownDiagonals()
+	public static IEnumerable<object[]> DataForLeftDownDiagonalsStartingPoint()
 	{
 		// board,size rows, cols, moveRow, moveCol, resultRow, resultCol
 		yield return new object[] { 3, 3, 0,0, 0,0 };
@@ -99,7 +169,7 @@ public class BoardTests
 	}
 
 	[Theory]
-	[MemberData(nameof(DataForLeftDownDiagonals))]
+	[MemberData(nameof(DataForLeftDownDiagonalsStartingPoint))]
 	public void Can_Find_LeftDown_Diagonal_StartingPoint(int br, int bc, int mr, int mc, int rr, int rc )
 	{
 		// arrange
@@ -113,7 +183,7 @@ public class BoardTests
 	}
 
 	// test data for columns
-	public static IEnumerable<object[]> DataForLetDownDiagonals()
+	public static IEnumerable<object[]> DataForLeftDownDiagonalsSeries()
 	{
 		// rows, cols, initial row and col, expected result
 		yield return new object[] { 3, 3, 0, 0, true };
@@ -127,7 +197,7 @@ public class BoardTests
 	}
 
 	[Theory]
-	[MemberData(nameof(DataForLetDownDiagonals))]
+	[MemberData(nameof(DataForLeftDownDiagonalsSeries))]
 	public void Can_Determine_Move_Creates_Series_On_LeftDown_Diagonal(int bsr, int bsc,int r, int c, bool expected)
 	{
 		// arrange
@@ -139,9 +209,9 @@ public class BoardTests
 		for( var cnt = 0; cnt < SeriesCount; ++cnt )
 		{
 			//  break on board  border
-			if ((row + cnt) < board.Rows && (col + cnt) < board.Columns)
+			lastMove = new Move(row + cnt, col + cnt, 1);
+			if ( board.NotOverTheEdge(lastMove.Row, lastMove.Col))
 			{
-				lastMove = new Move(row + cnt, col + cnt, 1);
 				board.PutMove(lastMove);
 			}
 		}

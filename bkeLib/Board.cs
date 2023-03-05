@@ -104,14 +104,12 @@ public class Board
 	//  After every move we check if a series of length _seriesCount is
 	//  established. The Game can use this to determine a winner
 	//
-	public bool MoveCreatesSeries( int row, int col, int move)
+	public bool MoveCreatesSeries(  Move mv)
 	{
-		var mv = new Move(row, col, move);
 		return CreatesRowSeries( mv ) |
 		       CreatesColumnSeries( mv ) |
 		       CreatesLeftDownDiagonalSeries( mv ) |
 		       CreatesRightDownDiagonalSeries(  mv );
-
 	}
 
 	public bool CreatesLeftDownDiagonalSeries( Move move )
@@ -147,11 +145,10 @@ public class Board
 	public bool CreatesRightDownDiagonalSeries( Move move )
 	{
 		var seriesLength = 0;
-		var r = move.Row;
-		var c = move.Col;
-		for (var cnt = 0; cnt < Columns & seriesLength != _seriesCount; ++cnt)
+		var mv  = GetRightDownStartingPoint(move);
+		while( NotOverTheEdge(mv.Row, mv.Col)  & seriesLength != _seriesCount )
 		{
-			if (_board[r, c] != move.Value)
+			if (_board[mv.Row, mv.Col ] != move.Value)
 			{
 				// start over
 				seriesLength = 0;
@@ -161,8 +158,8 @@ public class Board
 				// add to series length
 				seriesLength += 1;
 			}
-			r += 1;
-			c -= 1;
+			mv.Row += 1;
+			mv.Col -= 1;
 		}
 		return seriesLength == _seriesCount;
 	}
