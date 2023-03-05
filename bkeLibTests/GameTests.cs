@@ -16,7 +16,7 @@ public class GameTests
 		// act
 		var game = new Game(board);
 		// assert
-		Assert.Equal<int>(size, game.Board.Size);
+		Assert.Equal(size, game.Board.Size);
 	}
 
 	[Fact]
