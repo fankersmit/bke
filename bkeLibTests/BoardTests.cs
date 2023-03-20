@@ -6,6 +6,24 @@ public class BoardTests
 {
 	private const int SeriesCount = 3;
 
+	[Theory]
+	[InlineData( 3, 5, "A1")]
+	[InlineData( 3, 5, "C5")]
+	[InlineData( 5, 3, "A1")]
+	[InlineData( 5, 3, "E3")]
+	[InlineData( 3, 3, "B2")]
+	[InlineData( 8, 8, "H8")]
+	[InlineData( 8, 8, "H1")]
+	[InlineData( 8, 8, "A8")]
+	public void Can_Determine_Valid_Input_For_Any_BoardSize(int rows, int cols, string input)
+	{
+		// arrange
+		var board = new Board(rows, cols);  // ctor calculates valid moves
+		// act
+		// assert
+		Assert.True(  board.IsValidCell( input ) );
+	}
+
 	//
 	public static IEnumerable<object[]> DataCreatesSeries()
 	{
@@ -287,7 +305,7 @@ public class BoardTests
 		// act
 		var move = new Move(3, 3, 1);
 		// assert
-		Assert.Throws<ArgumentOutOfRangeException>( ()=> board.PutMove(move));
+		Assert.Throws<InvalidOperationException>( ()=> board.PutMove(move));
 	}
 
 	[Fact]
@@ -297,7 +315,7 @@ public class BoardTests
 		var board = new Board();
 	    board.PutMove(0,0,0);
 		// act, assert
-		Assert.Throws<ArgumentException>(() => board.PutMove(0, 0, 0));
+		Assert.Throws<InvalidOperationException>(() => board.PutMove(0, 0, 0));
 	}
 
 	[Fact]

@@ -15,6 +15,7 @@ public class Board
 	private readonly int[,] _board;
 	private readonly int _emptyField;
 	private readonly int _seriesCount;
+	private readonly string[] _validMoves;
 
 	// constructors, default board size is 3X3
 	public Board(int rows = 3, int cols = 3)
@@ -26,9 +27,11 @@ public class Board
 		}
 		_board = new int[rows, cols];
 		// determine the _emptyField value
-		// this value enable  summing row and cols in determining wining moves
+		// this value enables summing row and cols in determining winning moves
 		_emptyField = Math.Max(rows, cols);
 		Clear();
+		// determine valid moves
+		_validMoves = CalcValidMoves();
 		//  determine length of a series
 		_seriesCount = 3;
 	}
@@ -85,6 +88,33 @@ public class Board
 		return _board[row, col] == _emptyField;
 	}
 
+	public bool IsValidCell(string cell)
+	{
+		return _validMoves.Contains(cell.ToUpper());
+	}
+
+	public bool IsValidMove(Move move)
+	{
+		return IsValidMove(move.Row, move.Col, move.Value);
+	}
+
+	public bool IsValidMove(int row, int col, int move)
+	{
+		if ( !NotOverTheEdge(row, col) )
+		{
+			var msg = $"Field [{row},{col}] is outside the board!";
+			throw new InvalidOperationException(msg);
+		}
+
+		if ( !IsFieldEmpty(row, col) )
+		{
+			var current= _board[row, col];
+			var msg = $"Field [{row},{col}] is already taken: {current}";
+			throw new InvalidOperationException(msg);
+		}
+		return true;
+	}
+
 	// Put a move on the board (row, col, value is  0 or 1 )
 	public void PutMove(Move move)
 	{
@@ -93,19 +123,10 @@ public class Board
 
 	public void PutMove(int row, int col, int move)
 	{
-		if ( !NotOverTheEdge(row, col) ) // note negation
+		if( IsValidMove( row, col, move) )
 		{
-			var msg = $"Field [{row},{col}] is outside the board!";
-			throw new ArgumentOutOfRangeException(msg);
+			_board[row, col] = move;
 		}
-
-		if ( !IsFieldEmpty(row, col) )
-		{
-			var current= _board[row, col];
-			var msg = $"Field [{row},{col}] is already taken: {current}";
-			throw new ArgumentException(msg);
-		}
-		_board[row, col] = move;
 	}
 
 	//  After every move we check if a series of length _seriesCount is
@@ -223,5 +244,20 @@ public class Board
 			}
 		}
 		return seriesLength == _seriesCount;
+	}
+
+	private string[] CalcValidMoves()
+	{
+		var validMoves = new string[Rows * Columns];
+		var multipl = Rows > Columns ? Columns : Rows; 
+		for( var row = 0 ; row < Rows; ++row)
+		{
+			for (var col = 0; col < Columns; ++col)
+			{
+				validMoves[row*multipl + col] = $"{ (char)(row + 65)}{col+1}";
+			}
+		}
+
+		return validMoves;
 	}
 }

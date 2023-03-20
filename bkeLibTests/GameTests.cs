@@ -35,12 +35,18 @@ public class GameTests
 	{
 		// arrange
 		var game = new Game();
-
+		var moves = new Move[]
+		{
+			new(0, 0, Zero),
+			new(0, 1, Cross),
+			new(0, 2, Zero),
+			new(1, 0, Cross)
+		};
 		// act, play
-		game.PlayMove(Zero, 0, 0);
-		game.PlayMove(Cross, 0, 1);
-		game.PlayMove(Zero, 0, 2);
-		game.PlayMove(Cross, 1, 0);
+		foreach (var move in moves)
+		{
+			game.PlayMove(move);
+		}
 		// assert
 		Assert.False(game.IsGameCompleted());
 	}
@@ -50,18 +56,19 @@ public class GameTests
 	{
 		// arrange
 		var game = new Game();
+		var moves = new Move[]
+		{
+			new( 0, 0, Zero), new( 0, 1, Cross), new( 0, 2, Zero),
+			new( 1, 0, Cross), new( 1, 1, Zero), new( 1, 2, Cross),
+			new( 2, 0, Zero), new( 2, 2, Cross), new ( 2, 1,Zero)
+		};
 
 		// act, play
-		game.PlayMove(Zero, 0, 0);
-		game.PlayMove(Cross, 0, 1);
-		game.PlayMove(Zero, 0, 2);
-		game.PlayMove(Cross, 1, 0);
-		game.PlayMove(Zero, 1, 1);
-		game.PlayMove(Cross, 1, 2);
-		game.PlayMove(Zero, 2, 0);
-		game.PlayMove(Cross, 2, 2);
-		game.PlayMove(Zero, 2, 1);
-		// assert
+		foreach( var move in moves )
+		{
+			game.PlayMove(move);
+		}
+	    // assert
 		Assert.True(game.IsGameCompleted());
 	}
 
@@ -92,9 +99,11 @@ public class GameTests
 	{
 		// arrange
 		var game = new Game();
-		game.PlayMove(Zero, 0, 0);
+		var move1 = new Move(0, 0, Zero);
+		var move2 = new Move(0, 0, Cross);
+		game.PlayMove(move1);
 		// act, assert
-		Assert.Throws<InvalidOperationException>( ()=> game.PlayMove(Cross, 0, 0) );
+		Assert.Throws<InvalidOperationException>( ()=> game.PlayMove(move2) );
 	}
 
 	[Fact]
@@ -102,9 +111,10 @@ public class GameTests
 	{
 		// arrange
 		var game = new Game();
-		game.PlayMove(Zero, 0, 0);
+		var move = new Move(0, 0, Zero);
+		game.PlayMove(move);
 		// act, assert
-		Assert.Throws<InvalidOperationException>( ()=> game.PlayMove(Zero, 0, 0) );
+		Assert.Throws<InvalidOperationException>( ()=> game.PlayMove(move) );
 	}
 
 	[Fact]

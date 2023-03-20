@@ -63,18 +63,22 @@
 4. Weergeven borden zetten wordt complexer, console nog de juiste keuze?. 
 5. Resultaat van  spel en spelers bewaren en opvragen.
 6. Meer logica moet van app naar lib, specifiej, speelrondes. 
+7. We hoeven pas een winnaar te zoeken vanaf de vijfde zet. 
 
 ## Ontwerpkeuzes
-
-1. Bord word zelfstanding en in spel opgevoerd (DI)
+1. Bord word zelfstanding en in spel opgevoerd (DI).
 2. Zet wordt zelfstandige readonly struct (Immutable).  
 2. Spelers kunnen voor een spel begint bord grootte opgeven.
-2. Spelers worden toegeveogd.
-3. Spellen en Spelers worden opgeslagen en kunnen wordenop gevraagd.
-4. Voor nu blijven we bij console.
-5. Voor het bepalen van de winnende zet kunnen we hetzelfde algoritme gebruiken, met de volgende aanpassing: 
+3. Voor nu blijven we bij console.
+4. Voor het bepalen van de winnende zet kunnen we hetzelfde algoritme gebruiken, met de volgende aanpassing: 
    - tel tot 3 opeenvolgende zelfde zetten.
-   -  stop niet als binnen 3 een andere zet gevonden wordt maar begin opnieuw.
-   -  stop als einde van rij of kolom bereikt wordt
-   -  het is nog steeds niet interessant om te optimaliseren, maar we gaan wel meten!
-   - voor een diagonaal bepalen we eerst startrij en sartkolom
+   - stop niet als binnen 3 een andere zet gevonden wordt maar begin opnieuw.
+   - stop als einde van rij of kolom bereikt wordt
+   - het is nog steeds niet interessant om te optimaliseren, maar we gaan wel meten!
+   - voor een diagonaal bepalen we eerst startrij en sartkolom.
+
+# Gewenste volgende features
+1. Spelers worden toegeveogd.
+2. Spellen en Spelers worden opgeslagen en kunnen wordenop gevraagd.
+3. Velden op bord zijn nu alleen data, geef ze gedrag: er is een zet op mij gedaan
+4. versimpel main prograam loop, events vanuit zet is een optie.

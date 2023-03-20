@@ -29,7 +29,7 @@ public class ConAppTests
 	public void Can_Convert_Valid_Input_NextMove(string input, int row, int col)
 	{
 		// arrange, act
-		var result = Program.ConvertInputToMove(input);
+		var result = Program.ConvertInputToCell(input);
 		// assert
 		Assert.Equal(row, result.row);
 		Assert.Equal(col, result.col);
@@ -52,18 +52,22 @@ public class ConAppTests
 	public void Get_Next_Move_Returns_Move_From_Input()
 	{
 		// arrange
+		const int currentPlayer = 0;
 		var oldIn = Console.In;
 		const string input = "A1";
-		var expectedResult = (0, 0);
-		(int, int) result;
+		var expectedResult = new Move {Row = 0, Col =0, Value = 0 };
+		Move result;
 		// act
 		using (var reader = new StringReader(input))
 		{
 			Console.SetIn(reader);
-			result = Program.GetNextMove();
+			Program.StartNewGame();
+			result = Program.GetNextMove(currentPlayer);
 		}
 		// assert
-		Assert.Equal(expectedResult, result );
+		Assert.Equal(expectedResult.Row, result.Row );
+		Assert.Equal(expectedResult.Col, result.Col);
+		Assert.Equal(expectedResult.Value, result.Value );
 		// clean up
 		Console.SetIn(oldIn);
 	}

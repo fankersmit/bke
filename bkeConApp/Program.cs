@@ -20,6 +20,7 @@ namespace bkeConApp
 		private const int Zero = 0;
 		private static bool _keepRunning = true;
 		private static bool _gameCompleted = true;
+		private static Game _game;
 
 		// Main is where game playing happens
 		//
@@ -31,7 +32,6 @@ namespace bkeConApp
 			Console.OutputEncoding = Encoding.Unicode;
 
 			WelcomeMessage();
-			var game = StartNewGame();
 			var currentPlayer = Cross;
 
 			// main playing loop
@@ -39,16 +39,16 @@ namespace bkeConApp
 			{
 				if (_gameCompleted)
 				{
-					game = StartNewGame();
+					StartNewGame();
 					_gameCompleted = false;
 				}
 
-				DisplayBoard(game);
-				var move = GetNextMove();
+				DisplayBoard(_game);
+				var move = GetNextMove( currentPlayer);
 
 				try
 				{
-					game.PlayMove(currentPlayer, move.row, move.col);
+					_game.PlayMove(move);
 				}
 				catch (InvalidOperationException e)
 				{
@@ -56,15 +56,15 @@ namespace bkeConApp
 					continue;
 				}
 
-				if (game.IsWinningMove(move.row, move.col))
+				if (_game.IsWinningMove(move))
 				{
-					DisplayBoard(game);
+					DisplayBoard(_game);
 					Console.WriteLine($"We have a winner: {currentPlayer}");
 					_gameCompleted = true;
 				}
 				else
 				{
-					_gameCompleted = game.IsGameCompleted();
+					_gameCompleted = _game.IsGameCompleted();
 					if (_gameCompleted)
 					{
 						Console.WriteLine("It's a  draw.");
@@ -81,21 +81,20 @@ namespace bkeConApp
 			Environment.Exit(0);
 		}
 
-		// return a tuple
-		internal static ( int row, int col) GetNextMove()
+		internal static Move GetNextMove(int currentPlayer)
 		{
-			var validMoves = new [] { "A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3" };
 			string? nextMove; //CS8600
 			do
 			{
 				nextMove = Console.ReadLine();
-				nextMove  = nextMove ?? string.Empty;
-			} while (!validMoves.AsEnumerable().Contains(nextMove.ToUpper()));
-
-			return ConvertInputToMove(nextMove);
+				nextMove = nextMove ?? string.Empty;
+			}
+			while( !_game.Board.IsValidCell(nextMove));
+			var rc = ConvertInputToCell(nextMove);
+			return new Move { Row = rc.row, Col = rc.col, Value = currentPlayer };
 		}
 
-		internal static (int row, int col) ConvertInputToMove(string nextMove)
+		internal static (int row, int col) ConvertInputToCell(string nextMove)
 		{
 			var col = int.Parse(nextMove.Substring(1, 1)) - 1;
 			var row = nextMove.ToUpper()[0] - 65;
@@ -135,7 +134,8 @@ namespace bkeConApp
 
 		internal static Game StartNewGame()
 		{
-			return new Game();
+			_game = new Game();
+			return _game;
 		}
 
 		// helper methods

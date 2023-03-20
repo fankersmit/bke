@@ -52,15 +52,28 @@ public class Game
 			throw new InvalidOperationException(msg);
 		}
 
-		if ( !_board.IsFieldEmpty(row, col) )
+		if (_board.IsValidMove(row, col, move))
 		{
-			var msg = $"Field[{row}, {col}] is already filled.";
+			Board.PutMove(row, col, move);
+			_lastMove = move;
+			++_movesCount;
+	}
+}
+
+	public void PlayMove( Move move )
+	{
+		if (_lastMove == move.Value)
+		{
+			const string msg = "Same player cannot  play twice.";
 			throw new InvalidOperationException(msg);
 		}
 
-		Board.PutMove(row, col, move);
-		_lastMove = move;
-		++_movesCount;
+		if (_board.IsValidMove( move))
+		{
+			Board.PutMove(move);
+			_lastMove = move.Value;
+			++_movesCount;
+		}
 	}
 
 	// determine if last move was a winning move by checking if there
@@ -68,6 +81,11 @@ public class Game
 	public bool IsWinningMove(int row, int col)
 	{
 		return _board.MoveCreatesSeries(new Move(row, col, _lastMove));
+	}
+
+	public bool IsWinningMove(Move move)
+	{
+		return _board.MoveCreatesSeries(move);
 	}
 
 	// determine if there are still possible moves  to play
