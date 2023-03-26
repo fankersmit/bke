@@ -35,19 +35,6 @@ public class ConAppTests
 		Assert.Equal(col, result.col);
 	}
 
-	[Theory]
-	[InlineData( 0, 'O' )]
-	[InlineData( 1, 'X' )]
-	[InlineData( 3, ' ' )]
-	[InlineData( 23, ' ' )]
-	public void Can_Convert_Move_To_DisplayChar( int input, char expectedResult)
-	{
-		// arrange, act
-		var result = Program.DisplayCharFor(input);
-		// assert
-		Assert.Equal(expectedResult, result);
-	}
-
 	[Fact]
 	public void Get_Next_Move_Returns_Move_From_Input()
 	{
@@ -78,11 +65,12 @@ public class ConAppTests
 		const string expectedHrz = "\u2500";
 		const string expectedVrt = "\u2502";
 		const string expectedCrs = "\u253C";
-		const int expectedLength = 74;
 
 		// arrange, redirect console to memory
 		string board;
 		var oldOut = Console.Out;
+		var game = new Game( new Board(4,5));
+		int expectedLength = (game.Board.Rows * 2 - 1) * (game.Board.Columns * 4 + 1) + 4;
 
 		using( var ms = new MemoryStream() )
 		{
@@ -92,7 +80,7 @@ public class ConAppTests
 				currentOut.AutoFlush = true;
 				Console.SetOut(currentOut); // redirect console
 				// act
-				Program.DisplayBoard(new Game());
+				Program.DisplayBoard(game);
 
 				ms.Flush();
 				ms.Position = 0;

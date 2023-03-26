@@ -260,4 +260,41 @@ public class Board
 
 		return validMoves;
 	}
+
+	// display current board and moves played
+	public void Render()
+	{
+		var hrz = new string('\u2500', 3);
+		const string vrt = "\u2502";
+		const string crs = "\u253C";
+
+		Console.WriteLine();
+		for (var row = 0; row < Rows; ++row)
+		{
+			for (var col = 0; col < Columns; ++col)
+			{
+				var displayChar = DisplayCharFor( _board[row, col]);
+				Console.Write($" {displayChar} {(col < Columns - 1 ? vrt : Environment.NewLine)}");
+			}
+
+			// line in between
+			if (row < (Rows - 1))
+			{
+				for (var col = 0; col < Columns - 1; ++col)
+				{
+					Console.Write($"{hrz}{crs}");
+				}
+				Console.WriteLine(hrz);
+			}
+		}
+		Console.WriteLine();
+	}
+
+	// note the use of switch expression
+	public char DisplayCharFor(int i) => i switch
+	{
+		0 => 'O',
+		1 => 'X',
+		_ => ' '
+	};
 }

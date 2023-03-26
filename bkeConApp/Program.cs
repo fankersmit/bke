@@ -103,34 +103,8 @@ namespace bkeConApp
 
 		internal static void DisplayBoard(Game game)
 		{
-			const string hrz = "\u2500";
-			const string vrt = "\u2502";
-			const string crs = "\u253C";
-			Console.WriteLine();
-			for (var row = 0; row < 3; ++row)
-			{
-				Console.Write(" ");
-				for (var col = 0; col < 3; ++col)
-				{
-					var displayChar = DisplayCharFor(game.Board[row, col]);
-					Console.Write($" {displayChar} {(col < 2 ? vrt : Environment.NewLine)}");
-				}
-
-				if (row < 2)
-				{
-					Console.WriteLine($" {hrz}{hrz}{hrz}{crs}{hrz}{hrz}{hrz}{crs}{hrz}{hrz}{hrz}");
-				}
-			}
-			Console.WriteLine();
+			game.Board.Render();
 		}
-
-		// note the use of switch expression
-		internal static char DisplayCharFor(int i) => i switch
-		{
-			0 => 'O',
-			1 => 'X',
-			_ => ' '
-		};
 
 		internal static Game StartNewGame()
 		{

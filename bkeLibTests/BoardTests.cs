@@ -6,6 +6,21 @@ public class BoardTests
 {
 	private const int SeriesCount = 3;
 
+
+	[Theory]
+	[InlineData( 0, 'O' )]
+	[InlineData( 1, 'X' )]
+	[InlineData( 3, ' ' )]
+	[InlineData( 23, ' ' )]
+	public void Can_Convert_Move_To_DisplayChar( int input, char expectedResult)
+	{
+		// arrange, act
+		var board = new Board();
+		var result = board.DisplayCharFor(input);
+		// assert
+		Assert.Equal(expectedResult, result);
+	}
+
 	[Theory]
 	[InlineData( 3, 5, "A1")]
 	[InlineData( 3, 5, "C5")]
